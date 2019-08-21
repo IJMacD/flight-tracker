@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4ebb3195eec9d457a036c5737a1f957f",
+    "revision": "54021f3cb7b5bce7b7687782608bffb3",
     "url": "/flight-tracker/index.html"
   },
   {
-    "revision": "7fb42c3bf19c7ce76e87",
+    "revision": "f8889ed336aa17c4f4ec",
     "url": "/flight-tracker/static/css/main.4b17b976.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/flight-tracker/static/js/2.a8f91875.chunk.js"
   },
   {
-    "revision": "7fb42c3bf19c7ce76e87",
-    "url": "/flight-tracker/static/js/main.0951f2ba.chunk.js"
+    "revision": "f8889ed336aa17c4f4ec",
+    "url": "/flight-tracker/static/js/main.f71150f5.chunk.js"
   },
   {
     "revision": "736e31592bc95c393d3f",
