@@ -41,7 +41,7 @@ export default function ATCDisplay ({ aircraft, myLocation }) {
                 ctx.lineTo(x + dx, bounds.height - y - dy);
                 ctx.stroke();
                 ctx.fillText(craft.callsign, x + 10, bounds.height - y);
-                ctx.fillText(`${metresToFlightLevel(craft.geo_altitude)} ${mpsToKnotsDisplay(craft.velocity)}`, x + 10, bounds.height - y + 12);
+                ctx.fillText(`${metresToFlightLevel(craft.geo_altitude)} ${craft.vertical_rate > 2.5 ? "🡩" : craft.vertical_rate < -2.5 ? "🡫" : "=" }${mpsToKnotsDisplay(craft.velocity)}`, x + 10, bounds.height - y + 12);
                 ctx.save();
                 ctx.translate(x, bounds.height-y);
                 ctx.rotate(θ);
