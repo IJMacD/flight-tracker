@@ -18,13 +18,15 @@ class App extends React.Component {
 
     this.state = {
       aircraft: [],
+      history: {},
     };
   }
 
   componentDidMount () {
     const update = async () => {
       const aircraft = await getAircraft(map_bounds);
-      this.setState({ aircraft });
+      const history = updateHistory(this.state.history, aircraft);
+      this.setState({ aircraft, history });
     }
     update();
     this.timeout = setInterval(update, 10 * 1000);
@@ -56,7 +58,11 @@ class App extends React.Component {
             </div>
           })}
         </div> */}
-        <ATCDisplay aircraft={this.state.aircraft} myLocation={this.state.myLocation} />
+        <ATCDisplay
+          aircraft={this.state.aircraft}
+          history={this.state.history}
+          myLocation={this.state.myLocation}
+        />
       </div>
     );
   }
@@ -77,4 +83,16 @@ function zip (keys, values) {
     o[keys[i]] = values[i];
   }
   return o;
+}
+
+function updateHistory (history, aircraft) {
+  const out = {};
+
+  for (const craft of aircraft) {
+    const prev = history[craft.icao24] || [];
+    const { longitude, latitude } = craft;
+    out[craft.icao24] = [ ...prev, { longitude, latitude } ];
+  }
+
+  return out;
 }

@@ -6,11 +6,11 @@ const bounds = {
   min_lat: 22.1,
   max_lon: 114.5,
   max_lat: 22.6,
-  width: 1000,
-  height: 800,
+  width: 1086,
+  height: 842,
 };
 
-export default function ATCDisplay ({ aircraft, myLocation }) {
+export default function ATCDisplay ({ aircraft, history, myLocation }) {
     /** @type {React.MutableRefObject<HTMLCanvasElement>} */
     const ref = React.useRef();
     React.useEffect(() => {
@@ -32,14 +32,30 @@ export default function ATCDisplay ({ aircraft, myLocation }) {
             for (const craft of aircraft) {
                 const { x, y } = getPosition(bounds, craft.longitude, craft.latitude);
                 const θ = toRadians(craft.true_track);
+
                 const dx1 = Math.sin(θ) * 5;
                 const dy1 = Math.cos(θ) * 5;
                 const dx = Math.sin(θ) * craft.velocity * 0.1;
                 const dy = Math.cos(θ) * craft.velocity * 0.1;
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(x + dx1, bounds.height - y - dy1);
                 ctx.lineTo(x + dx, bounds.height - y - dy);
                 ctx.stroke();
+
+                const hist = history[craft.icao24];
+                if (hist) {
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    let first = true;
+                    for (const h of hist) {
+                        const { x, y } = getPosition(bounds, h.longitude, h.latitude);
+                        first ? ctx.moveTo(x,bounds.height-y) : ctx.lineTo(x,bounds.height-y);
+                        first = false;
+                    }
+                    ctx.stroke();
+                }
+
                 ctx.fillText(craft.callsign, x + 10, bounds.height - y);
                 ctx.fillText(`${metresToFlightLevel(craft.geo_altitude)} ${craft.vertical_rate > 2.5 ? "🡩" : craft.vertical_rate < -2.5 ? "🡫" : "=" }${mpsToKnotsDisplay(craft.velocity)}`, x + 10, bounds.height - y + 12);
                 ctx.save();
