@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/flight-tracker/static/css/main.4b17b976.chunk.css",
+    "main.js": "/flight-tracker/static/js/main.103f7c56.chunk.js",
+    "main.js.map": "/flight-tracker/static/js/main.103f7c56.chunk.js.map",
+    "runtime~main.js": "/flight-tracker/static/js/runtime~main.6dca72d7.js",
+    "runtime~main.js.map": "/flight-tracker/static/js/runtime~main.6dca72d7.js.map",
+    "static/js/2.4e716a1f.chunk.js": "/flight-tracker/static/js/2.4e716a1f.chunk.js",
+    "static/js/2.4e716a1f.chunk.js.map": "/flight-tracker/static/js/2.4e716a1f.chunk.js.map",
+    "static/js/3.22eb4858.chunk.js": "/flight-tracker/static/js/3.22eb4858.chunk.js",
+    "static/js/3.22eb4858.chunk.js.map": "/flight-tracker/static/js/3.22eb4858.chunk.js.map",
+    "index.html": "/flight-tracker/index.html",
+    "precache-manifest.7e0ed953489fb00e0317b57fc504546e.js": "/flight-tracker/precache-manifest.7e0ed953489fb00e0317b57fc504546e.js",
+    "service-worker.js": "/flight-tracker/service-worker.js",
+    "static/css/main.4b17b976.chunk.css.map": "/flight-tracker/static/css/main.4b17b976.chunk.css.map"
+  }
+}
