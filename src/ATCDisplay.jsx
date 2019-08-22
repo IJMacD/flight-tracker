@@ -1,18 +1,12 @@
 import React from 'react';
 import { getPosition } from './util';
 
-const bounds = {
-  min_lon: 113.8,
-  min_lat: 22.1,
-  max_lon: 114.5,
-  max_lat: 22.6,
-  width: 1086,
-  height: 842,
-};
-
-export default function ATCDisplay ({ aircraft, history, myLocation }) {
+export default function ATCDisplay ({ bounds, aircraft, history, myLocation, coastline }) {
     /** @type {React.MutableRefObject<HTMLCanvasElement>} */
     const ref = React.useRef();
+    /** @type {React.MutableRefObject<HTMLCanvasElement>} */
+    const bgRef = React.useRef();
+
     React.useEffect(() => {
         if (ref.current) {
             const ctx = ref.current.getContext("2d");
@@ -57,7 +51,7 @@ export default function ATCDisplay ({ aircraft, history, myLocation }) {
                 }
 
                 ctx.fillText(craft.callsign, x + 10, bounds.height - y);
-                ctx.fillText(`${metresToFlightLevel(craft.geo_altitude)} ${craft.vertical_rate > 2.5 ? "🡩" : craft.vertical_rate < -2.5 ? "🡫" : "=" }${mpsToKnotsDisplay(craft.velocity)}`, x + 10, bounds.height - y + 12);
+                ctx.fillText(`${metresToFlightLevel(craft.geo_altitude)}${craft.vertical_rate > 2.5 ? "🡩" : craft.vertical_rate < -2.5 ? "🡫" : "=" } ${mpsToKnotsDisplay(craft.velocity)}`, x + 10, bounds.height - y + 12);
                 ctx.save();
                 ctx.translate(x, bounds.height-y);
                 ctx.rotate(θ);
@@ -67,7 +61,27 @@ export default function ATCDisplay ({ aircraft, history, myLocation }) {
         }
     });
 
-    return <canvas ref={ref} width={bounds.width} height={bounds.height} style={{ backgroundImage: `url(${require('./map_outline.png')})`, backgroundSize: "100%" }} />
+    React.useEffect(() => {
+        if (bgRef.current && coastline) {
+            const ctx = bgRef.current.getContext("2d");
+            ctx.strokeStyle = "#80C080";
+            for (const f of coastline.features) {
+                ctx.beginPath();
+                let first = true;
+                for (const coord of f.geometry.coordinates) {
+                    const { x, y } = getPosition(bounds, coord[0], coord[1]);
+                    first ? ctx.moveTo(x, bounds.height - y) : ctx.lineTo(x, bounds.height - y);
+                    first = false;
+                }
+                ctx.stroke();
+            }
+        }
+    }, [coastline]);
+
+    return <div style={{ position: "relative" }}>
+        <canvas ref={bgRef} width={bounds.width} height={bounds.height} style={{ position: "absolute" }} />
+        <canvas ref={ref} width={bounds.width} height={bounds.height} />
+    </div>
 }
 
 function metresToFlightLevel (metres) {

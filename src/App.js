@@ -4,12 +4,12 @@ import ATCDisplay from './ATCDisplay';
 import { getPosition } from './util';
 
 const map_bounds = {
-  min_lon: 113.8,
-  min_lat: 22.1,
+  min_lon: 113.5,
+  min_lat: 22.0,
   max_lon: 114.5,
-  max_lat: 22.6,
-  width: 543,
-  height: 421,
+  max_lat: 22.7,
+  width: 1083,
+  height: 842,
 };
 
 class App extends React.Component {
@@ -22,7 +22,7 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     const update = async () => {
       const aircraft = await getAircraft(map_bounds);
       const history = updateHistory(this.state.history, aircraft);
@@ -34,6 +34,9 @@ class App extends React.Component {
     navigator.geolocation.getCurrentPosition(p => {
       this.setState({ myLocation: p.coords });
     });
+
+    const coastline = (await import("./coastline.json")).default;
+    this.setState({ coastline });
   }
 
   componentWillUnmount () {
@@ -62,6 +65,8 @@ class App extends React.Component {
           aircraft={this.state.aircraft}
           history={this.state.history}
           myLocation={this.state.myLocation}
+          coastline={this.state.coastline}
+          bounds={map_bounds}
         />
       </div>
     );
